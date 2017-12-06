@@ -17,6 +17,9 @@ CMatrix(const CMatrix&);
 CMatrix operator*(const CMatrix&) const;
 CMatrix& operator=(const CMatrix&);
 friend ostream& operator<<(ostream&, const CMatrix&);
+void check (unsigned int, unsigned int) const;
+float read (unsigned int, unsigned int) const;
+void write(unsigned int, unsigned int, float);
 
 struct CMatrix::object 
 {
@@ -151,4 +154,20 @@ ostream& operator << (ostream& o, const CMatrix& s)
     o << endl;
   }
   return o;
+}
+
+void CMatrix::check (unsigned int i, unsigned int j) const
+{
+  if(data->col<=i || data->row<=j)
+    throw IndexOutOfRange();
+}
+float CMatrix::read(unsigned int i, unsigned int j) const
+{
+  return data->m[i][j];
+}
+
+void CMatrix::write(unsigned int i, unsigned int j, float n)
+{
+  data = data->detach();
+  data->m[i][j] = n;
 }
