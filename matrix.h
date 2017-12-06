@@ -36,22 +36,33 @@ struct CMatrix::object
 
   object(unsigned int ncol, unsigned int nrow) 
   {
-  unsigned int i=0;
-  n=1;
-  col=ncol;
-  row=nrow;
-  m=new float *[col];
-  for(i=0;i<col;i++)
-    m[i]=new float[row];
+    unsigned int i=0;
+    unsigned int j=0;
+    n=1;
+    col=ncol;
+    row=nrow;
+    m=new float *[col];
+
+    try
+    {
+      for(i=0;i<col;i++)
+        m[i]=new float[row];
+    }
+    catch(bad_alloc)
+    {
+     for(j=0;i<i;j++)
+      delete [] m[j];
+     delete [] m;
+    }
   };
 
 
   ~object()
   {
-  unsigned int i;
-  for(i=0;i<col;i++)
-    delete [] m[i];
-  delete [] m;
+    unsigned int i;
+    for(i=0;i<col;i++)
+      delete [] m[i];
+    delete [] m;
   };
 
   object* detach()
