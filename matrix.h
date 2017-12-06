@@ -11,6 +11,8 @@ class CMatrix{
 };
 public:
 CMatrix(unsigned int ,unsigned int ,float, float);
+CMatrix(fstream&);
+CMatrix(const CMatrix&);
 
 struct CMatrix::object 
 {
@@ -76,4 +78,23 @@ CMatrix::CMatrix(unsigned int col=0, unsigned int row=0, float var=0, float ovar
 {
   data=new object(col,row);
   data->fill(var, ovar);
+}
+
+CMatrix::CMatrix(fstream& f) 
+{
+  unsigned i=0,j =0;
+  unsigned int col=0, row=0;
+  if(!f.good())
+    throw FileReadError();
+  f >> col >> row;
+  data=new object(col,row);
+  for(i=0;i<col;i++)
+    for(j=0;j<row;j++)
+      f >> data->m[i][j];
+}
+
+CMatrix::CMatrix(const CMatrix & x)
+{
+    x.data->n++;
+    data=x.data;
 }
