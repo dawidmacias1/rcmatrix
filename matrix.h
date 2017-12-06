@@ -14,6 +14,9 @@ CMatrix(unsigned int ,unsigned int ,float, float);
 CMatrix(fstream&);
 CMatrix(const CMatrix&);
 ~CMatrix();
+CMatrix operator*(const CMatrix&) const;
+CMatrix& operator=(const CMatrix&);
+friend ostream& operator<<(ostream&, const CMatrix&);
 
 struct CMatrix::object 
 {
@@ -104,4 +107,48 @@ CMatrix::~CMatrix()
 {
   if(--data->n==0)
     delete data;
+}
+
+CMatrix CMatrix::operator*(const CMatrix& x) const 
+{
+  CMatrix no(data->col,x.data->row,0,0);
+  float s=0;
+  unsigned int i=0,j=0,k=0;
+  if(data->col!=x.data->row || data->row!=x.data->col)
+    throw WrongDim();
+  for(i=0;i<data->col;i++)
+  {
+    for(j=0;j<data->col;j++)
+    {
+      for(k=0;k<data->row;k++) 
+        s+=data->m[i][k]*x.data->m[k][j];
+    no.data->m[i][j]=s;
+    s=0;
+    }
+  }
+  return no;
+}
+
+CMatrix& CMatrix::operator=(const CMatrix & x) 
+{
+  x.data->n++;
+  if(--data->n == 0)
+    delete data;
+  data=x.data;
+  return *this;
+}
+
+ostream& operator << (ostream& o, const CMatrix& s)
+{
+  unsigned int i=0,j=0;
+  o << "[  " << fixed;
+  for(i=0;i<s.data->col;i++)
+  {
+    if(i!=0) o << "   ";
+    for(j=0;j<s.data->row;j++)
+      o << setprecision(1) << s.data->m[i][j] << "  ";
+    if(i==s.data->col-1) cout << "]";
+    o << endl;
+  }
+  return o;
 }
