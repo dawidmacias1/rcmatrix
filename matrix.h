@@ -8,15 +8,15 @@ class CMatrix{
   struct object;
   object* data;
 public:
-CMatrix(unsigned int ,unsigned int ,float, float);
-CMatrix(fstream&);
-CMatrix(const CMatrix&);
-~CMatrix();
 class WrongDim{};
 class FileReadError{};
 class IndexOutOfRange{};
 class Cref2;
 class Cref;
+CMatrix(unsigned int ,unsigned int ,float, float);
+CMatrix(fstream&);
+CMatrix(const CMatrix&);
+~CMatrix();
 CMatrix operator*(const CMatrix&) const;
 CMatrix& operator=(const CMatrix&);
 friend ostream& operator<<(ostream&, const CMatrix&);
@@ -25,6 +25,7 @@ float read (unsigned int, unsigned int) const;
 void write(unsigned int, unsigned int, float);
 Cref2 operator[](unsigned int);
 };
+
 struct CMatrix::object 
 {
   float **m;
@@ -85,37 +86,6 @@ struct CMatrix::object
   }
 };
 
-CMatrix::CMatrix(unsigned int col=0, unsigned int row=0, float var=0, float ovar=0) 
-{
-  data=new object(col,row);
-  data->fill(var, ovar);
-}
-
-CMatrix::CMatrix(fstream& f) 
-{
-  unsigned i=0,j =0;
-  unsigned int col=0, row=0;
-  if(!f.good())
-    throw FileReadError();
-  f >> col >> row;
-  data=new object(col,row);
-  for(i=0;i<col;i++)
-    for(j=0;j<row;j++)
-      f >> data->m[i][j];
-}
-
-CMatrix::CMatrix(const CMatrix & x)
-{
-    x.data->n++;
-    data=x.data;
-}
-
-CMatrix::~CMatrix()
-{
-  if(--data->n==0)
-    delete data;
-}
-
 class CMatrix::Cref2
 {
   friend class CMatrix; 
@@ -153,6 +123,37 @@ CMatrix::Cref2::Cref CMatrix::Cref2::operator[](unsigned int nrow)
   row=nrow;
   s.check(col,row);
   return Cref(*this);
+}
+
+CMatrix::CMatrix(unsigned int col=0, unsigned int row=0, float var=0, float ovar=0) 
+{
+  data=new object(col,row);
+  data->fill(var, ovar);
+}
+
+CMatrix::CMatrix(fstream& f) 
+{
+  unsigned i=0,j =0;
+  unsigned int col=0, row=0;
+  if(!f.good())
+    throw FileReadError();
+  f >> col >> row;
+  data=new object(col,row);
+  for(i=0;i<col;i++)
+    for(j=0;j<row;j++)
+      f >> data->m[i][j];
+}
+
+CMatrix::CMatrix(const CMatrix & x)
+{
+    x.data->n++;
+    data=x.data;
+}
+
+CMatrix::~CMatrix()
+{
+  if(--data->n==0)
+    delete data;
 }
 
 CMatrix CMatrix::operator*(const CMatrix& x) const 
