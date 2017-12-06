@@ -7,8 +7,6 @@ using namespace std;
 class CMatrix{
   struct object;
   object* data;
-
-};
 public:
 CMatrix(unsigned int ,unsigned int ,float, float);
 CMatrix(fstream&);
