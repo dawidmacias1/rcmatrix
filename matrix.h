@@ -9,6 +9,8 @@ class CMatrix{
   object* data;
 
 };
+public:
+CMatrix(unsigned int ,unsigned int ,float, float);
 
 struct CMatrix::object 
 {
@@ -69,3 +71,9 @@ struct CMatrix::object
         p[i][j]=m[i][j];
   }
 };
+
+CMatrix::CMatrix(unsigned int col=0, unsigned int row=0, float var=0, float ovar=0) 
+{
+  data=new object(col,row);
+  data->fill(var, ovar);
+}
