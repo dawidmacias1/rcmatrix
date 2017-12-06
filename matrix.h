@@ -14,6 +14,8 @@ CMatrix(unsigned int ,unsigned int ,float, float);
 CMatrix(fstream&);
 CMatrix(const CMatrix&);
 ~CMatrix();
+class Cref2;
+class Cref;
 CMatrix operator*(const CMatrix&) const;
 CMatrix& operator=(const CMatrix&);
 friend ostream& operator<<(ostream&, const CMatrix&);
@@ -110,6 +112,45 @@ CMatrix::~CMatrix()
 {
   if(--data->n==0)
     delete data;
+}
+
+class CMatrix::Cref2
+{
+  friend class CMatrix; 
+  CMatrix& s;
+  unsigned int col;
+  unsigned int row;
+  Cref2 (CMatrix& ss, unsigned int i): s(ss), col(i){};
+  public:
+  class Cref;
+  Cref operator[](unsigned int);
+};
+
+class CMatrix::Cref2::Cref
+  {
+  friend class Cref2;
+  Cref2 &so;
+  Cref (Cref2& sso): so(sso) {};
+  public:
+
+  operator float() const
+  {
+    return so.s.read(so.col,so.row);
+  }
+
+  CMatrix::Cref2::Cref& operator = (float f)
+  {
+    so.s.write(so.col,so.col,f);
+    return *this;
+  }
+
+};
+
+CMatrix::Cref2::Cref CMatrix::Cref2::operator[](unsigned int nrow)
+{
+  row=nrow;
+  s.check(col,row);
+  return Cref(*this);
 }
 
 CMatrix CMatrix::operator*(const CMatrix& x) const 
