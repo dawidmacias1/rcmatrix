@@ -53,6 +53,7 @@ struct CMatrix::object
      for(j=0;i<i;j++)
       delete [] m[j];
      delete [] m;
+	throw;
     }
   };
 
