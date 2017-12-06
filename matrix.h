@@ -13,6 +13,7 @@ public:
 CMatrix(unsigned int ,unsigned int ,float, float);
 CMatrix(fstream&);
 CMatrix(const CMatrix&);
+~CMatrix();
 
 struct CMatrix::object 
 {
@@ -97,4 +98,10 @@ CMatrix::CMatrix(const CMatrix & x)
 {
     x.data->n++;
     data=x.data;
+}
+
+CMatrix::~CMatrix()
+{
+  if(--data->n==0)
+    delete data;
 }
