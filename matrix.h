@@ -22,7 +22,8 @@ friend ostream& operator<<(ostream&, const CMatrix&);
 void check (unsigned int, unsigned int) const;
 float read (unsigned int, unsigned int) const;
 void write(unsigned int, unsigned int, float);
-
+Cref2 operator[](unsigned int);
+};
 struct CMatrix::object 
 {
   float **m;
@@ -211,4 +212,9 @@ void CMatrix::write(unsigned int i, unsigned int j, float n)
 {
   data = data->detach();
   data->m[i][j] = n;
+}
+
+CMatrix::Cref2 CMatrix::operator[](unsigned int i)
+{
+  return Cref2(*this,i);
 }
