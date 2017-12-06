@@ -8,3 +8,4 @@ CMatrix.o: main.cpp matrix.h
 
 clean:
 	-rm CMatrix.o CMatrix
+
