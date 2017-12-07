@@ -50,7 +50,7 @@ struct CMatrix::object
     }
     catch(bad_alloc)
     {
-     for(j=0;i<i;j++)
+     for(j=0;j<i;j++)
       delete [] m[j];
      delete [] m;
 	throw;
@@ -124,7 +124,7 @@ class CMatrix::Cref2::Cref
 
   CMatrix::Cref2::Cref& operator = (float f)
   {
-    so.s.write(so.col,so.col,f);
+    so.s.write(so.col,so.row,f);
     return *this;
   }
 

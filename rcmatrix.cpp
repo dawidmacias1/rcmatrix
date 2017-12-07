@@ -26,7 +26,8 @@ int main()
 		fstream f1;
 		f1.open("plik.txt", ios::in);
 		CMatrix D(f1);				
-		f1.close();				
+		f1.close();
+		D[4][3] = 11;				
 		cout << D << endl;
 
 		CMatrix E;
